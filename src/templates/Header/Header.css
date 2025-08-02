@@ -1,0 +1,30 @@
+.header--pageHeader {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
+  margin: 0;
+  padding: 0 0 2rem 3rem;
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #eff2f6;
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.header--pageHeader__title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 0.5rem;
+}
+
+.header--pageHeader__text {
+  font-size: 1rem;
+  font-weight: 300;
+}
