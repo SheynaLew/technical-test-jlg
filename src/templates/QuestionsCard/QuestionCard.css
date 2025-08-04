@@ -41,8 +41,14 @@
 }
 
 .questionsCard--question-review-text {
-  padding-bottom: 1.5rem;
   font-size: 0.7rem;
   font-weight: 300;
   text-align: center;
+}
+
+.questionsCard--finish-container {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1.5rem;
+  width: 100%;
 }

@@ -1,15 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import "./OpinionBar.css";
 
-export default function OpinionBar({ questionId, onAnswer }) {
-  const [value, setValue] = useState("");
+export default function OpinionBar({ questionId, onAnswer, existingAnswer }) {
+  const [value, setValue] = useState(
+    existingAnswer ? existingAnswer.toString() : ""
+  );
+  const [isAnswering, setIsAnswering] = useState(false);
+
+  useEffect(() => {
+    if (existingAnswer) {
+      setValue(existingAnswer.toString());
+    } else {
+      setValue("");
+    }
+    setIsAnswering(false);
+  }, [questionId, existingAnswer]);
 
   const handleValueChange = (newValue) => {
     setValue(newValue);
-    if (onAnswer && questionId) {
-      onAnswer(questionId, parseInt(newValue));
-    }
+    setIsAnswering(true);
+
+    setTimeout(() => {
+      if (onAnswer && questionId) {
+        onAnswer(questionId, parseInt(newValue));
+      }
+    }, 200);
   };
 
   return (
@@ -18,6 +34,7 @@ export default function OpinionBar({ questionId, onAnswer }) {
         className="radio-group"
         value={value}
         onValueChange={handleValueChange}
+        disabled={isAnswering}
       >
         <div className="radio-options">
           {[0, 1, 2, 3, 4, 5, 6, 7].map((option) => (

@@ -1,3 +1,5 @@
+import "./BasicButton.css";
+
 export default function BasicButton({ text, onBtnClick }) {
   const onHandleClick = () => {
     onBtnClick();

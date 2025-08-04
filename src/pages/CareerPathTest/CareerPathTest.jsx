@@ -63,15 +63,23 @@ export default function CareerPathTest() {
     });
 
     setCurrentQuestionIndex((prev) => {
-      const newIndex = prev + 1;
-      return newIndex;
+      const isFinalQuestion = prev === questions.questions?.length - 1;
+      if (isFinalQuestion) {
+        return prev;
+      }
+      return prev + 1;
     });
   };
 
-  // Just logging these for now. When final question is answered, the finish button will appear in the dom and the answers will be sent to the API on click of this button
-  useEffect(() => {
-    console.log("Answers array updated:", answers);
-  }, [answers]);
+  const handleFinish = () => {
+    if (answers.length === questions.questions.length) {
+      // should submit answers to the API here
+      console.log("Answers array updated:", answers);
+    } else {
+      // should display an error message to the user
+      console.log("Not all questions have been answered");
+    }
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -83,8 +91,6 @@ export default function CareerPathTest() {
         const [questionsData] = await Promise.all([getQuestions(user)]);
 
         setQuestions(questionsData);
-        // Can remove this once displaying questions in order
-        console.log("Questions loaded:", questionsData);
       } catch (error) {
         setError("Failed to load data: " + error.message);
         console.error("Error loading data:", error);
@@ -163,10 +169,18 @@ export default function CareerPathTest() {
 
         {!loading && !error && (
           <QuestionCard
-            progress={10}
+            progress={
+              questions.questions
+                ? Math.round(
+                    (answers.length / questions.questions.length) * 100
+                  )
+                : 0
+            }
             questions={questions.questions}
             currentQuestionIndex={currentQuestionIndex}
             onAnswer={handleAnswer}
+            onFinish={handleFinish}
+            answers={answers}
           />
         )}
       </section>
