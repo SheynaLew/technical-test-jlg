@@ -17,6 +17,8 @@
 
 .questionsCard--question-container {
   display: flex;
+  justify-content: center;
+  width: 100%;
   padding: 4rem;
 }
 
@@ -28,12 +30,14 @@
 
 .questionsCard--question {
   padding-left: 0.5rem;
+  width: 60%;
   font-size: 0.7rem;
 }
 
 .questionsCard--question-text {
   font-weight: 500;
   font-size: 0.9rem;
+  margin-bottom: 1.5rem;
 }
 
 .questionsCard--question-review-text {
