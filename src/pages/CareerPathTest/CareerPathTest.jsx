@@ -20,6 +20,7 @@ export default function CareerPathTest() {
   const [error, setError] = useState(null);
   const [user] = useState(getUserFromURL());
   const [answers, setAnswers] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const infoCards = [
     {
@@ -44,7 +45,6 @@ export default function CareerPathTest() {
       iconBorderColor: "#f6c516",
     },
   ];
-
   const handleAnswer = (questionId, answer) => {
     setAnswers((prev) => {
       const existingIndex = prev.findIndex(
@@ -60,6 +60,11 @@ export default function CareerPathTest() {
       }
 
       return newAnswers;
+    });
+
+    setCurrentQuestionIndex((prev) => {
+      const newIndex = prev + 1;
+      return newIndex;
     });
   };
 
@@ -160,6 +165,7 @@ export default function CareerPathTest() {
           <QuestionCard
             progress={10}
             questions={questions.questions}
+            currentQuestionIndex={currentQuestionIndex}
             onAnswer={handleAnswer}
           />
         )}

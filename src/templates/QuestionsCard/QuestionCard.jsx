@@ -1,8 +1,13 @@
 import "./QuestionCard.css";
 import OpinionBar from "./OpinionBar/OpinionBar";
 
-export default function QuestionCard({ progress, questions, onAnswer }) {
-  const currentQuestion = questions[0]; // For now, hardcoded to first question
+export default function QuestionCard({
+  progress,
+  currentQuestionIndex,
+  questions,
+  onAnswer,
+}) {
+  const currentQuestion = questions[currentQuestionIndex]; // For now, hardcoded to first question
 
   return (
     <section className="questionsCard--container">
@@ -10,8 +15,7 @@ export default function QuestionCard({ progress, questions, onAnswer }) {
       {/* ProgressBar component here */}
       <div className="questionsCard--question-container">
         <span className="questionsCard--question-number">
-          {/* Once I have the submission data I can set the question number correctly. Hardcoded for now. */}
-          Q1/{questions.length}{" "}
+          Q{currentQuestionIndex + 1}/{questions.length}{" "}
         </span>
         <div className="questionsCard--question">
           <p className="questionsCard--question-prompt">
