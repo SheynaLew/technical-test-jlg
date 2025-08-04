@@ -1,0 +1,32 @@
+.infoCard--container {
+  background-color: #fff;
+  border-radius: 1rem;
+  border: 1px solid #acabab;
+  width: 15rem;
+  height: 8rem;
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  gap: 1rem;
+  position: relative;
+  overflow: visible;
+}
+
+.infoCard--iconContainer {
+  position: absolute;
+  left: -1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.infoCard--icon {
+  width: 1.5rem;
+}
+
+.infoCard--textContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 2rem;
+}
