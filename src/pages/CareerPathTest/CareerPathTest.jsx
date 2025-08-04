@@ -19,6 +19,7 @@ export default function CareerPathTest() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user] = useState(getUserFromURL());
+  const [answers, setAnswers] = useState([]);
 
   const infoCards = [
     {
@@ -44,6 +45,29 @@ export default function CareerPathTest() {
     },
   ];
 
+  const handleAnswer = (questionId, answer) => {
+    setAnswers((prev) => {
+      const existingIndex = prev.findIndex(
+        (item) => item.questionId === questionId
+      );
+
+      let newAnswers;
+      if (existingIndex >= 0) {
+        newAnswers = [...prev];
+        newAnswers[existingIndex] = { questionId, answer };
+      } else {
+        newAnswers = [...prev, { questionId, answer }];
+      }
+
+      return newAnswers;
+    });
+  };
+
+  // Just logging these for now. When final question is answered, the finish button will appear in the dom and the answers will be sent to the API on click of this button
+  useEffect(() => {
+    console.log("Answers array updated:", answers);
+  }, [answers]);
+
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -54,6 +78,7 @@ export default function CareerPathTest() {
         const [questionsData] = await Promise.all([getQuestions(user)]);
 
         setQuestions(questionsData);
+        // Can remove this once displaying questions in order
         console.log("Questions loaded:", questionsData);
       } catch (error) {
         setError("Failed to load data: " + error.message);
@@ -132,7 +157,11 @@ export default function CareerPathTest() {
         )}
 
         {!loading && !error && (
-          <QuestionCard progress={10} questions={questions.questions} />
+          <QuestionCard
+            progress={10}
+            questions={questions.questions}
+            onAnswer={handleAnswer}
+          />
         )}
       </section>
     </>
