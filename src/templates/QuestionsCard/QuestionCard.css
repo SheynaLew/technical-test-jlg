@@ -1,0 +1,44 @@
+.questionsCard--container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1350px;
+  margin: 2rem auto;
+  border: 1px solid rgb(172, 171, 171, 0.5);
+  box-shadow: 0 0 15px 2px rgba(172, 171, 171, 0.2);
+}
+
+.questionsCard--progress {
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid rgb(172, 171, 171, 0.5);
+  font-size: 0.85rem;
+  font-weight: 300;
+}
+
+.questionsCard--question-container {
+  display: flex;
+  padding: 4rem;
+}
+
+.questionsCard--question-number {
+  color: #f79b44;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.questionsCard--question {
+  padding-left: 0.5rem;
+  font-size: 0.7rem;
+}
+
+.questionsCard--question-text {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.questionsCard--question-review-text {
+  padding-bottom: 1.5rem;
+  font-size: 0.7rem;
+  font-weight: 300;
+  text-align: center;
+}
