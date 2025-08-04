@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "../../templates/Header/Header";
 import InfoCard from "../../templates/InfoCard/InfoCard";
 import "./CareerPathTest.css";
+import QuestionCard from "../../templates/QuestionsCard/QuestionCard";
 import backgroundImage from "../../assets/images/discover-journey-maze.svg";
 import clipboardIcon from "../../assets/images/clipboard-question.svg";
 import stopwatchIcon from "../../assets/images/stopwatch.svg";
@@ -131,19 +132,7 @@ export default function CareerPathTest() {
         )}
 
         {!loading && !error && (
-          <div
-            style={{
-              marginTop: "2rem",
-              padding: "1rem",
-              backgroundColor: "#e8f5e8",
-              borderRadius: "8px",
-            }}
-          >
-            <p>
-              <strong>Data loaded successfully!</strong>
-            </p>
-            <p>Questions: {questions.questions[0].text}</p>
-          </div>
+          <QuestionCard progress={10} questions={questions.questions} />
         )}
       </section>
     </>
