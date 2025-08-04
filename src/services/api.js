@@ -35,8 +35,14 @@ const questionsCall = async (endpoint, options = {}) => {
 };
 
 export const getQuestions = (user = "default") => {
-  return questionsCall(`/questions?user=${encodeURIComponent(user)}`, {
-    method: "GET",
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      questionsCall(`/questions?user=${encodeURIComponent(user)}`, {
+        method: "GET",
+      })
+        .then(resolve)
+        .catch(reject);
+    }, 3005);
   });
 };
 
@@ -47,10 +53,14 @@ export const getSubmissions = (user = "default") => {
 };
 
 export const createSubmission = (submissionData, user = "default") => {
-  console.log("User:", user);
-  console.log("Submission data:", submissionData);
-  return questionsCall(`/submissions?user=${encodeURIComponent(user)}`, {
-    method: "POST",
-    body: JSON.stringify(submissionData),
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      questionsCall(`/submissions?user=${encodeURIComponent(user)}`, {
+        method: "POST",
+        body: JSON.stringify(submissionData),
+      })
+        .then(resolve)
+        .catch(reject);
+    }, 3005);
   });
 };

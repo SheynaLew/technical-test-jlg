@@ -7,7 +7,11 @@ import backgroundImage from "../../assets/images/discover-journey-maze.svg";
 import clipboardIcon from "../../assets/images/clipboard-question.svg";
 import stopwatchIcon from "../../assets/images/stopwatch.svg";
 import scissorsIcon from "../../assets/images/scissor-cutting.svg";
-import { getQuestions, createSubmission } from "../../services/api";
+import {
+  getQuestions,
+  createSubmission,
+  getSubmissions,
+} from "../../services/api";
 
 const getUserFromURL = () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -16,6 +20,7 @@ const getUserFromURL = () => {
 
 export default function CareerPathTest() {
   const [questions, setQuestions] = useState([]);
+  const [submissions, setSubmissions] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user] = useState(getUserFromURL());
@@ -94,13 +99,26 @@ export default function CareerPathTest() {
       setError(null);
 
       try {
-        // Remember to add submissions to the API call below (working on getting questions first)
-        const [questionsData] = await Promise.all([getQuestions(user)]);
+        const [questionsData, submissionsData] = await Promise.all([
+          getQuestions(user),
+          getSubmissions(user),
+        ]);
 
         setQuestions(questionsData);
+        setSubmissions(submissionsData.latestSubmission ? true : false);
       } catch (error) {
-        setError("Failed to load data: " + error.message);
-        console.error("Error loading data:", error);
+        if (error.message.includes("404")) {
+          try {
+            const questionsData = await getQuestions(user);
+            setQuestions(questionsData);
+            setSubmissions(false);
+          } catch (questionsError) {
+            console.error("Failed to load questions:", questionsError);
+            setError("Failed to load questions: " + questionsError.message);
+          }
+        } else {
+          setError("Failed to load data: " + error.message);
+        }
       } finally {
         setLoading(false);
       }
@@ -117,82 +135,88 @@ export default function CareerPathTest() {
         backgroundImage={backgroundImage}
       />
 
-      <section className="careerPathTest--infoCards-container">
-        {infoCards.map((card) => (
-          <InfoCard
-            key={card.title}
-            title={card.title}
-            text={card.text}
-            iconImage={card.iconImage}
-            iconBackgroundColor={card.iconBackgroundColor}
-            iconBorderColor={card.iconBorderColor}
-          />
-        ))}
-      </section>
+      {console.log("Current submissions state:", submissions)}
+      {loading ? (
+        <div
+          style={{
+            marginTop: "2rem",
+            padding: "1rem",
+            backgroundColor: "#e3f2fd",
+            borderRadius: "8px",
+            textAlign: "center",
+          }}
+        >
+          <p>Loading...</p>
+          <p style={{ fontSize: "0.9rem", color: "#666" }}>
+            Checking if you've already completed the test...
+          </p>
+        </div>
+      ) : submissions === true ? (
+        <p>answers submitted</p>
+      ) : (
+        <>
+          <section className="careerPathTest--infoCards-container">
+            {infoCards.map((card) => (
+              <InfoCard
+                key={card.title}
+                title={card.title}
+                text={card.text}
+                iconImage={card.iconImage}
+                iconBackgroundColor={card.iconBackgroundColor}
+                iconBorderColor={card.iconBorderColor}
+              />
+            ))}
+          </section>
 
-      <section className="careerPathTest--intro">
-        <p>
-          We've analysed data from thousands of our members who work in graduate
-          roles across a range of sectors to understand which personalities,
-          skills and values best fit each career path.
-        </p>
-        <p>
-          Take this test to understand what career path you might be suited to
-          and how to get started.
-        </p>
-
-        {loading && (
-          <div
-            style={{
-              marginTop: "2rem",
-              padding: "1rem",
-              backgroundColor: "#e3f2fd",
-              borderRadius: "8px",
-              textAlign: "center",
-            }}
-          >
-            <p>Loading questions and submissions...</p>
-            <p style={{ fontSize: "0.9rem", color: "#666" }}>
-              This may take up to 30 seconds but will be with you shortly.
-            </p>
-          </div>
-        )}
-
-        {error && (
-          <div
-            style={{
-              marginTop: "2rem",
-              padding: "1rem",
-              backgroundColor: "#ffebee",
-              color: "#c62828",
-              borderRadius: "8px",
-            }}
-          >
+          <section className="careerPathTest--intro">
             <p>
-              <strong>Error:</strong> {error}
+              We've analysed data from thousands of our members who work in
+              graduate roles across a range of sectors to understand which
+              personalities, skills and values best fit each career path.
             </p>
-          </div>
-        )}
+            <p>
+              Take this test to understand what career path you might be suited
+              to and how to get started.
+            </p>
 
-        {!loading && !error && (
-          <QuestionCard
-            progress={
-              questions.questions
-                ? Math.round(
-                    (new Set(answers.map((answer) => answer.questionId)).size /
-                      questions.questions.length) *
-                      100
-                  )
-                : 0
-            }
-            questions={questions.questions}
-            currentQuestionIndex={currentQuestionIndex}
-            onAnswer={handleAnswer}
-            onFinish={handleFinish}
-            answers={answers}
-          />
-        )}
-      </section>
+            {error && (
+              <div
+                style={{
+                  marginTop: "2rem",
+                  padding: "1rem",
+                  backgroundColor: "#ffebee",
+                  color: "#c62828",
+                  borderRadius: "8px",
+                }}
+              >
+                <p>
+                  <strong>Error:</strong> {error}
+                </p>
+              </div>
+            )}
+
+            {!error && (
+              <QuestionCard
+                progress={
+                  questions.questions
+                    ? Math.round(
+                        (new Set(answers.map((answer) => answer.questionId))
+                          .size /
+                          questions.questions.length) *
+                          100
+                      )
+                    : 0
+                }
+                questions={questions.questions}
+                currentQuestionIndex={currentQuestionIndex}
+                onAnswer={handleAnswer}
+                onFinish={handleFinish}
+                answers={answers}
+              />
+            )}
+          </section>
+        </>
+      )}
     </>
   );
 }
