@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "../../templates/Header/Header";
 import InfoCard from "../../templates/InfoCard/InfoCard";
+import CompletionCard from "../../templates/CompletionCard/CompletionCard";
 import "./CareerPathTest.css";
 import QuestionCard from "../../templates/QuestionsCard/QuestionCard";
 import backgroundImage from "../../assets/images/discover-journey-maze.svg";
@@ -18,9 +19,22 @@ const getUserFromURL = () => {
   return urlParams.get("user") || "default";
 };
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.toLocaleDateString("en-GB", { month: "long" });
+  const year = date.getFullYear();
+
+  const suffix =
+    day > 3 && day < 21 ? "th" : ["st", "nd", "rd"][(day % 10) - 1] || "th";
+
+  return `${day}${suffix} ${month} ${year}`;
+};
+
 export default function CareerPathTest() {
   const [questions, setQuestions] = useState([]);
   const [submissions, setSubmissions] = useState(false);
+  const [submissionDate, setSubmissionDate] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user] = useState(getUserFromURL());
@@ -93,6 +107,10 @@ export default function CareerPathTest() {
     }
   };
 
+  const handleViewResults = () => {
+    console.log("Viewing results");
+  };
+
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -104,8 +122,12 @@ export default function CareerPathTest() {
           getSubmissions(user),
         ]);
 
+        console.log("Submissions data:", submissionsData);
         setQuestions(questionsData);
         setSubmissions(submissionsData.latestSubmission ? true : false);
+        if (submissionsData.latestSubmission) {
+          setSubmissionDate(formatDate(submissionsData.latestSubmission));
+        }
       } catch (error) {
         if (error.message.includes("404")) {
           try {
@@ -135,7 +157,6 @@ export default function CareerPathTest() {
         backgroundImage={backgroundImage}
       />
 
-      {console.log("Current submissions state:", submissions)}
       {loading ? (
         <div
           style={{
@@ -152,7 +173,7 @@ export default function CareerPathTest() {
           </p>
         </div>
       ) : submissions === true ? (
-        <p>answers submitted</p>
+        <CompletionCard date={submissionDate} viewResults={handleViewResults} />
       ) : (
         <>
           <section className="careerPathTest--infoCards-container">
