@@ -28,3 +28,8 @@
 ## Component Structure and Planning
 
 - See component-structure.png
+
+## Additional Tech Used
+
+- My OpinionsBar and ProgressBar were built using radixUI components.
+- For anything more complex I would consider building a component from scratch, but these fit the purpose and saved time.
