@@ -7,7 +7,7 @@ import backgroundImage from "../../assets/images/discover-journey-maze.svg";
 import clipboardIcon from "../../assets/images/clipboard-question.svg";
 import stopwatchIcon from "../../assets/images/stopwatch.svg";
 import scissorsIcon from "../../assets/images/scissor-cutting.svg";
-import { getQuestions } from "../../services/api";
+import { getQuestions, createSubmission } from "../../services/api";
 
 const getUserFromURL = () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -71,13 +71,20 @@ export default function CareerPathTest() {
     });
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     if (answers.length === questions.questions.length) {
-      // should submit answers to the API here
-      console.log("Answers array updated:", answers);
+      try {
+        const submissionData = { answers };
+        const response = await createSubmission(submissionData, user);
+        console.log("Submission successful:", response);
+        console.log("Answers submitted:", answers);
+      } catch (error) {
+        console.error("Submission failed:", error);
+        setError("Failed to submit answers: " + error.message);
+      }
     } else {
-      // should display an error message to the user
       console.log("Not all questions have been answered");
+      setError("Please answer all questions before submitting");
     }
   };
 

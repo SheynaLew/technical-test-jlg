@@ -47,6 +47,8 @@ export const getSubmissions = (user = "default") => {
 };
 
 export const createSubmission = (submissionData, user = "default") => {
+  console.log("User:", user);
+  console.log("Submission data:", submissionData);
   return questionsCall(`/submissions?user=${encodeURIComponent(user)}`, {
     method: "POST",
     body: JSON.stringify(submissionData),
