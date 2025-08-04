@@ -97,6 +97,10 @@ export default function CareerPathTest() {
         const response = await createSubmission(submissionData, user);
         console.log("Submission successful:", response);
         console.log("Answers submitted:", answers);
+
+        setSubmissions(true);
+        setSubmissionDate(formatDate(new Date().toISOString()));
+        setError(null);
       } catch (error) {
         console.error("Submission failed:", error);
         setError("Failed to submit answers: " + error.message);
