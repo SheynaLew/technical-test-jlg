@@ -1,6 +1,7 @@
 import "./QuestionCard.css";
 import OpinionBar from "./OpinionBar/OpinionBar";
 import BasicButton from "../../sharedComponents/BasicButton/BasicButton";
+import ProgressBar from "./ProgressBar/ProgressBar";
 
 export default function QuestionCard({
   progress,
@@ -17,8 +18,11 @@ export default function QuestionCard({
 
   return (
     <section className="questionsCard--container">
-      <p className="questionsCard--progress">Your progress - {progress}%</p>
-      {/* ProgressBar component here */}
+      <div className="questionsCard--progress-container">
+        <p className="questionsCard--progress">Your progress - {progress}%</p>
+        <ProgressBar progress={progress} />
+      </div>
+
       <div className="questionsCard--question-container">
         <span className="questionsCard--question-number">
           Q{currentQuestionIndex + 1}/{questions.length}{" "}
@@ -35,6 +39,7 @@ export default function QuestionCard({
           />
         </div>
       </div>
+
       <div className="questionsCard--finish-container">
         {progress === 100 ? (
           <BasicButton text="Finish" onBtnClick={onFinish} />

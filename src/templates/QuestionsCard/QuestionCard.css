@@ -8,11 +8,17 @@
   box-shadow: 0 0 15px 2px rgba(172, 171, 171, 0.2);
 }
 
-.questionsCard--progress {
+.questionsCard--progress-container {
+  display: flex;
+  align-items: center;
   padding: 1.5rem 1rem;
   border-bottom: 1px solid rgb(172, 171, 171, 0.5);
   font-size: 0.85rem;
   font-weight: 300;
+}
+
+.questionsCard--progress {
+  width: 17%;
 }
 
 .questionsCard--question-container {
@@ -41,6 +47,7 @@
 }
 
 .questionsCard--question-review-text {
+  padding-bottom: 1.5rem;
   font-size: 0.7rem;
   font-weight: 300;
   text-align: center;
@@ -50,5 +57,4 @@
   display: flex;
   justify-content: center;
   padding-bottom: 1.5rem;
-  width: 100%;
 }

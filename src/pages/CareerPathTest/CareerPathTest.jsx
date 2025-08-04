@@ -172,7 +172,9 @@ export default function CareerPathTest() {
             progress={
               questions.questions
                 ? Math.round(
-                    (answers.length / questions.questions.length) * 100
+                    (new Set(answers.map((answer) => answer.questionId)).size /
+                      questions.questions.length) *
+                      100
                   )
                 : 0
             }
