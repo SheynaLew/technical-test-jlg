@@ -1,6 +1,6 @@
 # Career Path Test
 
-# Implementation
+## Implementation
 
 - Pull the repo
 - cd into the repo
